@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<script src="js/htmlwidgets-0.6/htmlwidgets.js"></script>
+<script src="js/jquery-1.11.1/jquery.min.js"></script>
+<script src="js/underscore-1.8.3/underscore-min.js"></script>
+<link href="js/highcharts-4.2.4/css/motion.css" rel="stylesheet" />
+<script src="js/highcharts-4.2.4/highstock.js"></script>
+<script src="js/highcharts-4.2.4/highcharts-more.js"></script>
+<script src="js/highcharts-4.2.4/highcharts-3d.js"></script>
+<script src="js/highcharts-4.2.4/modules/exporting.js"></script>
+<script src="js/highcharts-4.2.4/modules/drilldown.js"></script>
+<script src="js/highcharts-4.2.4/modules/data.js"></script>
+<script src="js/highcharts-4.2.4/modules/heatmap.js"></script>
+<script src="js/highcharts-4.2.4/modules/map.js"></script>
+<script src="js/highcharts-4.2.4/modules/treemap.js"></script>
+<script src="js/highcharts-4.2.4/modules/funnel.js"></script>
+<script src="js/highcharts-4.2.4/modules/solid-gauge.js"></script>
+<script src="js/highcharts-4.2.4/modules/reset.js"></script>
+<script src="js/highcharts-4.2.4/plugins/motion.js"></script>
+<script src="js/highcharts-4.2.4/plugins/draggable-points.js"></script>
+<script src="js/highcharts-4.2.4/plugins/pattern-fill-v2.js"></script>
+<script src="js/highcharts-4.2.4/plugins/text-symbols.js"></script>
+<link href="js/fontawesome-4.5.0/font-awesome.min.css" rel="stylesheet" />
+<link href="js/htmlwdgtgrid-1/htmlwdgtgrid.css" rel="stylesheet" />
+<script src="js/highchart-binding-0.3.1.9999/highchart.js"></script>
+  
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,400italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+<style>
+/*  #######   header and footer styling   ########*/
+
+body, h1, h2, h3, h4, h5, h6, .descr {
+   text-rendering: optimizeLegibility;
+   font-smoothing: antialiased;
+   font-family: 'Open Sans', sans-serif;
+   font-size: 12px;
+   margin:4px 4px 4px 5px;
+}
+
+/* ensure data labels are not visible over the tooltip:
+http://stackoverflow.com/questions/15130311/highcharts-labels-visible-over-tooltip */
+/*label {
+  z-index: 1 !important;
+}
+
+.highcharts-tooltip span {
+  background-color:white;
+  opacity:1;
+  z-index:9999 !important;
+  border-radius: 3px;
+
+}
+
+.tooltip {
+  padding:2px;
+}
+*/
+
+
+#cite {
+    font-size: 1em; color: #e6e6e6; text-align: right; margin-top:2px; margin-right:10px; padding-bottom: 3px;
+}
+#cite a { text-decoration: none; color: #821122; }
+
+.descr {
+ font-size: 1.2em;
+ color: #9b4b4c;
+}
+    
+h1 {
+   font-size:2em;
+}
+
+h2 {
+   font-size:2.4em;
+   font-weight: lighter;
+   line-height: 95%;
+}
+
+h3 {
+   font-size:1.2em
+}
+
+h4 {
+   font-size:1.1em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+
+body {
+      font-size:8pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+}
+
+</style>
+</head>
+<body style="background-color:white;">
+<html>
+  <body>
+    <div class="graphic">
+      <div id="htmlwidget-3756" style="width:100%;height:500px;" class="highchart html-widget"></div>
+      <script type="application/json" data-for="htmlwidget-3756">{"x":{"hc_opts":{"title":{"text":"Young tennis players in the top 500 ATP"},"yAxis":{"title":{"text":"GDP per capita (in thousands USD, PPP)"},"labels":{"formatter":"function() { return this.value / 1000;}"},"ceiling":59629.4951678912,"floor":0},"credits":{"enabled":false},"exporting":{"enabled":false},"plotOptions":{"series":{"turboThreshold":0},"bubble":{"maxSize":100}},"chart":{"type":"bubble","spacing":[10,4,4,10]},"series":[{"data":[{"x":1,"y":13049.2770876209,"z":54000000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>South Africa\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 13049\u003c/td>\u003c/tr><tr><td>Population(millions): 54\u003c/td>\u003c/tr>\u003c/table>"}],"name":"Africa"},{"data":[{"x":1,"y":13206.3835747377,"z":1364000000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>China\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 13206\u003c/td>\u003c/tr><tr><td>Population(millions): 1364\u003c/td>\u003c/tr>\u003c/table>"},{"x":2,"y":5700.72347332058,"z":1295000000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>India\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 2\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 5701\u003c/td>\u003c/tr><tr><td>Population(millions): 1295\u003c/td>\u003c/tr>\u003c/table>"},{"x":4,"y":36619.4261712098,"z":127100000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Japan\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 4\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 36619\u003c/td>\u003c/tr><tr><td>Population(millions): 127.1\u003c/td>\u003c/tr>\u003c/table>"},{"x":4,"y":33394.7999142012,"z":50420000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>South Korea\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 4\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 33395\u003c/td>\u003c/tr><tr><td>Population(millions): 50.4\u003c/td>\u003c/tr>\u003c/table>"}],"name":"Asia"},{"data":[{"x":5,"y":45925.4938016701,"z":23470000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Australia\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 5\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 45925\u003c/td>\u003c/tr><tr><td>Population(millions): 23.5\u003c/td>\u003c/tr>\u003c/table>"}],"name":"Australasia"},{"data":[{"x":1,"y":15893.1514693368,"z":206100000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Brazil\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 15893\u003c/td>\u003c/tr><tr><td>Population(millions): 206.1\u003c/td>\u003c/tr>\u003c/table>"},{"x":1,"y":22071.0974691065,"z":17760000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Chile\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 22071\u003c/td>\u003c/tr><tr><td>Population(millions): 17.8\u003c/td>\u003c/tr>\u003c/table>"},{"x":1,"y":13357.1496717052,"z":47790000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Colombia\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 13357\u003c/td>\u003c/tr><tr><td>Population(millions): 47.8\u003c/td>\u003c/tr>\u003c/table>"},{"x":1,"y":17314.7182457025,"z":125400000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Mexico\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 17315\u003c/td>\u003c/tr><tr><td>Population(millions): 125.4\u003c/td>\u003c/tr>\u003c/table>"}],"name":"Central America"},{"data":[{"x":3,"y":31185.8787015268,"z":10530000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Czech Republic\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 3\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 31186\u003c/td>\u003c/tr><tr><td>Population(millions): 10.5\u003c/td>\u003c/tr>\u003c/table>"},{"x":1,"y":26850.893880054,"z":10870000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Greece\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 26851\u003c/td>\u003c/tr><tr><td>Population(millions): 10.9\u003c/td>\u003c/tr>\u003c/table>"},{"x":1,"y":21635.0822701423,"z":4238000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Croatia\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 21635\u003c/td>\u003c/tr><tr><td>Population(millions): 4.2\u003c/td>\u003c/tr>\u003c/table>"},{"x":1,"y":24227.7218120013,"z":17290000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Kazakhstan\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 24228\u003c/td>\u003c/tr><tr><td>Population(millions): 17.3\u003c/td>\u003c/tr>\u003c/table>"},{"x":2,"y":25261.5521480429,"z":38010000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Poland\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 2\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 25262\u003c/td>\u003c/tr><tr><td>Population(millions): 38\u003c/td>\u003c/tr>\u003c/table>"},{"x":4,"y":13594.1335641806,"z":7129000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Serbia\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 4\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 13594\u003c/td>\u003c/tr><tr><td>Population(millions): 7.1\u003c/td>\u003c/tr>\u003c/table>"},{"x":5,"y":22989.5779468672,"z":143800000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Russia\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 5\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 22990\u003c/td>\u003c/tr><tr><td>Population(millions): 143.8\u003c/td>\u003c/tr>\u003c/table>"},{"x":1,"y":19787.6564250296,"z":75930000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Turkey\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 19788\u003c/td>\u003c/tr><tr><td>Population(millions): 75.9\u003c/td>\u003c/tr>\u003c/table>"},{"x":1,"y":5573.1126747407,"z":30760000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Uzbekistan\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 5573\u003c/td>\u003c/tr><tr><td>Population(millions): 30.8\u003c/td>\u003c/tr>\u003c/table>"}],"name":"Central Europe"},{"data":[{"x":1,"y":33703.4250415256,"z":8216000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Israel\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 33703\u003c/td>\u003c/tr><tr><td>Population(millions): 8.2\u003c/td>\u003c/tr>\u003c/table>"}],"name":"Middle East"},{"data":[{"x":1,"y":45065.6915439595,"z":35880000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Canada\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 45066\u003c/td>\u003c/tr><tr><td>Population(millions): 35.9\u003c/td>\u003c/tr>\u003c/table>"},{"x":10,"y":54629.4951678912,"z":318900000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>US\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 10\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 54629\u003c/td>\u003c/tr><tr><td>Population(millions): 318.9\u003c/td>\u003c/tr>\u003c/table>"}],"name":"North America"},{"data":[{"x":1,"y":47682.2998037455,"z":8546000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Austria\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 47682\u003c/td>\u003c/tr><tr><td>Population(millions): 8.5\u003c/td>\u003c/tr>\u003c/table>"},{"x":3,"y":43434.7178348712,"z":11230000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Belgium\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 3\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 43435\u003c/td>\u003c/tr><tr><td>Population(millions): 11.2\u003c/td>\u003c/tr>\u003c/table>"},{"x":4,"y":46400.619237419,"z":80970000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Germany\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 4\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 46401\u003c/td>\u003c/tr><tr><td>Population(millions): 81\u003c/td>\u003c/tr>\u003c/table>"},{"x":7,"y":33628.937085449,"z":46480000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Spain\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 7\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 33629\u003c/td>\u003c/tr><tr><td>Population(millions): 46.5\u003c/td>\u003c/tr>\u003c/table>"},{"x":5,"y":39327.8676759058,"z":66220000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>France\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 5\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 39328\u003c/td>\u003c/tr><tr><td>Population(millions): 66.2\u003c/td>\u003c/tr>\u003c/table>"},{"x":1,"y":40233.2098149211,"z":64560000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Great Britain\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 40233\u003c/td>\u003c/tr><tr><td>Population(millions): 64.6\u003c/td>\u003c/tr>\u003c/table>"},{"x":6,"y":35462.7957200378,"z":60790000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Italy\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 6\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 35463\u003c/td>\u003c/tr><tr><td>Population(millions): 60.8\u003c/td>\u003c/tr>\u003c/table>"},{"x":1,"y":48253.3341426866,"z":16870000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Netherlands\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 48253\u003c/td>\u003c/tr><tr><td>Population(millions): 16.9\u003c/td>\u003c/tr>\u003c/table>"},{"x":1,"y":28759.9842917391,"z":10400000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Portugal\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 28760\u003c/td>\u003c/tr><tr><td>Population(millions): 10.4\u003c/td>\u003c/tr>\u003c/table>"},{"x":1,"y":45296.9562604006,"z":9696000,"name":"<table cellpadding=\"1\" style=\"line-height:1.2\"><tr><td><strong>Sweden\u003c/strong>\u003c/td>\u003c/tr><tr><td>Number of ≤21 years in the ATP 500: 1\u003c/td>\u003c/tr><tr><td>GDP per capita (PPP, USD): 45297\u003c/td>\u003c/tr><tr><td>Population(millions): 9.7\u003c/td>\u003c/tr>\u003c/table>"}],"name":"Western Europe"}],"tooltip":{"formatter":"function() { return  this.point.name;}","useHTML":true,"borderWidth":2},"xAxis":{"title":{"text":"Number of players less or 21 years old in the ATP 500"},"tickInterval":1},"colors":["#ab3d3f","#666699","#669999","#663333","#336666","#366096","#996699","#ac673e","#3a9736","#333366","#999966","#666633","#89a23a","#368596","#996666","#bfa681","#e5dbcd","#d4c3aa","#ac7f3e","#aa8959","#f7f5ed","#efe9e0"],"subtitle":{"text":"Number of players less or 21 years old in the ATP 500 by country. GDP per capita and population"}},"theme":{"colors":["#ab3d3f","#666699","#669999","#663333","#336666","#366096","#996699","#ac673e","#3a9736","#333366","#999966","#666633","#89a23a","#368596","#996666","#bfa681","#e5dbcd","#d4c3aa","#ac7f3e","#aa8959","#f7f5ed","#efe9e0"],"chart":{"backgroundColor":"#FBF8F3","style":{"fontFamily":"Open Sans Condensed"}},"title":{"align":"left","x":50,"style":{"color":"#1a1a1a","fontFamily":"Open Sans Condensed","fontSize":"2em"}},"subtitle":{"align":"left","x":50,"style":{"color":"#666666","fontFamily":"Open Sans Condensed","fontSize":"1.2em","fontWeight":"italic"}},"legend":{"itemStyle":{"fontFamily":"Open Sans Condensed","color":"black"},"itemHoverStyle":{"color":"gray"}},"yAxis":{"gridLineColor":"#CEC6B9","lineColor":"#CEC6B9","gridLineDashStyle":"Dot","labels":{"algn":"left","x":0,"y":-2,"tickLength":0,"tickColor":"#CEC6B9","tickWidth":1},"title":{"style":{"fontSize":"1.4em"}}},"xAxis":{"lineColor":"#CEC6B9","title":{"margin":17,"style":{"fontSize":"1.4em"}}},"tooltip":{"style":{"fontFamily":"Open Sans","fontSize":"0.9em"}}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","drillUpText":"Back to {series.name}","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"thousandsSep":" ","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":["Open+Sans Condensed","Open+Sans"],"debug":false},"evals":["hc_opts.yAxis.labels.formatter","hc_opts.tooltip.formatter"],"jsHooks":[]}</script>
+    </div>
+    <script type="text/javascript" src="https://www.swissinfo.ch/static/Themes/basic/js/vendor/iframeResizer.contentWindow.3.5.3.min.js"></script>
+  </body>
+</html>
+</body>
+</html>

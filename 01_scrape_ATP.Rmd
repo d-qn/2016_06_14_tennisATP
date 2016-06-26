@@ -1,0 +1,90 @@
+---
+title: "01_scrape ATP tennis ranking"
+author: "Duc-Quang Nguyen"
+date: "14 June 2016"
+output: html_document
+---
+
+# Scrape
+
+## ATP world tour
+
+* [ATP ranking singles](http://www.atpworldtour.com/en/rankings/singles)
+* [all former n°1](http://www.atpworldtour.com/en/rankings/former-no-1s)
+
+## rvest
+
+ * [rvest tutorial: scraping the web using R](http://stat4701.github.io/edav/2015/04/02/rvest_tutorial/)
+
+
+```{r setup, include=FALSE}
+library(rvest)
+library(magrittr)
+library(dplyr)
+library(zoo)
+```
+
+## Get the url of all n°1 players
+
+** Data ** 
+* This [url](http://www.atpworldtour.com/en/rankings/former-no-1s) lists all n° 1
+* All n° 1 players in the table are of class .player-cell
+* In chrome, using selectorGadget check whether '.player-cell' works and select the n° 1
+
+```{r get n1s}
+url <- read_html("http://www.atpworldtour.com/en/rankings/former-no-1s")
+
+# Get all n° 1s and their URL
+players <- url %>% 
+  html_nodes(".player-cell")
+
+raw.links <- players %>% html_nodes("a")
+links <- gsub("\\\" data-ga-label.*a>$", "", gsub("^<a href=\\\"", "", raw.links))
+
+names <- gsub("\\\r\\\n", "", players %>% html_text())
+names <- gsub("\\\t\\\t\\\t\\\t", "", names)
+
+# for every player page, his historical ranking page is "rankings-history" instead of "overview"
+links <- paste0("http://www.atpworldtour.com", gsub("overview", "rankings-history", links))
+names(links) <- names
+```
+## Download historical ranking of n°1s
+
+```{r get historical rankings}
+
+link <- links[25]
+
+atp <- lapply(links, function(link) {
+  cat("\n", link)
+  rtable <- read_html(link) %>% 
+    html_nodes(".mega-table") %>% html_table()
+  
+  rtable <- rtable[[1]] %>% select (-Doubles)
+  rtable$Date <- as.Date(rtable$Date, format = "%Y.%m.%d")
+  #reformat date
+  rtable$Date <-  format(rtable$Date, "%m/%d/%Y")
+  # remove leading T
+  rtable$Singles <- as.numeric(gsub("T", "", rtable$Singles))
+  # replace 0 by NA
+  rtable$Singles[which( rtable$Singles == 0)] <- NA
+  zoo(rtable$Singles, rtable$Date) 
+})
+
+# get all dates
+dates <- as.Date(unique(unlist(sapply(atp, function(dff) index(dff)))), format = "%m/%d/%Y")
+dates <- format(dates[order(dates)], "%m/%d/%Y")
+
+## save a vanilla data.frame
+n1.ranking <- matrix(nrow = length(dates), ncol = length(atp))
+colnames(n1.ranking) <- names(atp)
+rownames(n1.ranking) <- dates
+
+for (i in seq_along(atp)) {
+	idx <- match(index(atp[[i]]), format(as.Date(row.names(n1.ranking), format = "%m/%d/%Y"), "%m/%d/%Y"))
+	n1.ranking[idx,i] <- atp[[i]]
+}
+stopifnot(which(n1.ranking == 0) != integer(0))
+write.csv(n1.ranking, file = "input/alln1_ATP_ranking.csv", row.names = T)
+
+```
+
