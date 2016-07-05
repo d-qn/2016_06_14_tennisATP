@@ -1,0 +1,184 @@
+---
+title: "02_heatmap_n1_ATP"
+author: "Duc-Quang Nguyen"
+date: "26 June 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(zoo)
+library(dplyr)
+library(magrittr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+library(swiTheme)
+library(ggiraph)
+library(viridisLite)
+
+atpRanking.file <- "input/alln1_ATP_ranking.csv"
+
+```
+
+```{r shape data}
+# load data
+n1rank <- read.csv(atpRanking.file, check.names = F, row.names = 1)
+# convert to zoo
+zn1 <- zoo(as.matrix(n1rank), as.Date(row.names(n1rank), format = "%m/%d/%Y"))
+
+dates <- index(zn1)
+
+date.reg <- c(seq(min(dates), max(dates), 7))
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TO add AND CHECK !!!!!!!!!!!!
+# ugly hack to add another date (for connors he was for one week n2, not visible otherwise)
+#date.reg <- c(date.reg, as.Date("23.08.1977", "%d.%m.%Y"))
+#date.reg <- c(date.reg, as.Date("1977-08-23", "%Y-%m-%d"))
+date.reg <- date.reg[order(date.reg)]
+
+idx <- findInterval(date.reg, index(zn1), rightmost.closed = FALSE, all.inside = FALSE)
+eq.zn1 <- zoo(unclass(zn1)[idx,], date.reg)
+
+stopifnot(!any(duplicated(index(eq.zn1))) )
+ranks <- max(eq.zn1, na.rm =T)
+
+# ugly hack to fill ranking before 1985
+dateLabel <- rep("", length(date.reg))
+ii <- which(!duplicated(format(date.reg, format = "%Y")))
+dateLabel[ii[-1]] <- format(date.reg[ii[-1]], "%Y")
+dateLabel[ii[1]] <- format(date.reg[ii[1]], "%Y-%m-%d")
+
+# tranform back zoo to data.frame for ggplot2
+n1 <- as.data.frame(eq.zn1)
+n1 <- cbind(dates = as.Date(as.character(rownames(n1))), n1)
+rownames(n1) <- NULL
+
+n1 %<>% gather(player, rank, -dates)
+n1$lrank <- log10(n1$rank)
+
+# order data.frame by chronological order of players got n1
+n1.dates <- n1 %>% 
+  group_by(player) %>% summarise(first1 = dates[min(which(rank == 1))]) %>% 
+  ungroup() %>% arrange(first1)
+# order factor player
+n1$player <- factor(n1$player, levels = n1.dates$player)
+
+# check dates spacing
+stopifnot(all(diff(unique(n1$dates))==7))
+
+narow <- n1 %>% group_by(dates) %>% 
+  summarise(narow = all(is.na(rank))) %>% ungroup()
+naidx <- which(narow %>% select(narow) %>% unlist())
+if(length(naidx)>0) {
+  warning(narow[naidx,] )
+}
+# create dates end
+#n1 %<>% group_by(player) %>% mutate(dates.end = c(diff(dates), 7))
+
+```
+
+## Plot
+
+* Check this use of [geom_rect](https://nsaunders.wordpress.com/2015/04/15/project-tycho-ggplot2-and-the-shameless-stealing-of-blog-ideas/)
+
+```{r heatmap}
+htheme <- function() {
+  swi_theme(y_gridlines = F) + 
+    theme(
+      axis.ticks.y = element_blank(),
+      axis.text.y = element_blank(),
+      strip.text.y = element_text(angle = 0, hjust = 0),
+      axis.line.x = element_blank(),
+      axis.text.x = element_text(angle = 90, hjust = 0.5),
+      axis.title.y = element_blank(),
+      panel.margin = unit(0.08, "lines"),
+      legend.position=c(0.8, 0.95),
+      legend.margin = unit(0, "lines"),
+      legend.key.height = unit(0.7, "lines"),
+      legend.key.width = unit(0.8, "lines"),
+      legend.direction = "horizontal"
+    )
+}
+
+# move strip.text
+# http://stackoverflow.com/questions/11979017/changing-facet-label-to-math-formula-in-ggplot2
+
+
+hatp <- ggplot(n1) + 
+  geom_rect(aes(xmin = dates, xmax = dates + 7, ymin = 0, ymax = 9, fill = lrank)) + 
+  facet_grid(player ~ .) + 
+  htheme() +
+  # to overwrite colour label scale legend
+  scale_fill_gradientn(
+    name = "ATP ranking",
+    colours = viridis(1000, option = "D"),
+    na.value = "transparent",
+    labels=as.character(c(10^0, 10^1, 10^2, 10^3))
+  ) +
+  scale_x_date(breaks = pretty_breaks(20), expand = c(0, 0))
+
+annot <- read.table(text=
+"date|player|hjust|text
+1980-08-23|Boris Becker|0|asdfs adfsad<br>asdfdsa",
+sep="|", header=TRUE, stringsAsFactors=FALSE)
+annot$date <- as.Date(annot$date)
+annot$player <- factor(annot$player, levels = levels(n1$player))
+annot$text <- gsub("<br>", "\n", annot$text)
+
+subtitle <- "Since its creation in 1973, the Association of Tennis Players (ATP) ranking became every tennis player’s dream. Over 40 years, only 25 players have reached the summit, with just 16 finishing the season as year-end No. 1. The high resolution weekly ranking of these 25 players is shown under."
+
+hatp +  
+  labs(
+    title = paste0( as.numeric(round(diff(range(dates)) / 365)), 
+      "year of ATP ranking - ", nlevels(n1$player), 
+      " number 1 tennis players"),
+    subtitle = subtitle) #+
+  # annotate(
+  #   aes(x=annot$date, y = 4, label=annot$text, hjust=annot$hjust),
+  #   lineheight=0.95, size=3, label.size=0, color="#2b2b2b"
+  #   )
+
+```
+
+```{r heatmap variant without faceting}
+rect.h <- 9
+rect.spacing <- 1
+rect.y <- rect.h + rect.spacing
+plab.offset <- 7 * 4 
+
+# define ymin & ymax for geom_rect
+n1r <- do.call(rbind, lapply(1:nlevels(n1$player), function(i) {
+  cbind(
+    n1 %>% filter(player == levels(n1$player)[i]), 
+    ymin = rect.y * (i-1),
+    ymax = (rect.y * (i-1)) + rect.h
+  )
+}))
+n1r %<>% group_by(player) %>% mutate(y = (ymin + ymax) / 2) %>% ungroup()
+player.lab <- n1r %>% group_by(player, y) %>% 
+  summarise(x = dates[max(which(!is.na(rank)))] + plab.offset) %>% ungroup()
+
+
+hatp2 <- ggplot(n1r) + 
+  geom_rect(aes(xmin = dates, xmax = dates + 7, ymin = ymin, ymax = ymax, fill = lrank)) + 
+  htheme() +
+  # to overwrite colour label scale legend
+  scale_fill_gradientn(
+    name = "ATP ranking",
+    colours = viridis(1000, option = "D"),
+    na.value = "transparent",
+    labels=as.character(c(10^0, 10^1, 10^2, 10^3))
+  ) + 
+  scale_x_date(
+    breaks = pretty_breaks(20), 
+    expand = c(0, 0), 
+    limits = c(min(n1r$dates), max(n1r$dates) + 1000)
+  ) +
+  geom_text(
+    data = player.lab,
+    aes(x = x, y = y, label = player), hjust = 0,
+      family = "OpenSans-CondensedLight",
+    size=3, color="#2b2b2b")
+
+
+```

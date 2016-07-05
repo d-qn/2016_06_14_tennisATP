@@ -45,8 +45,18 @@ names <- gsub("\\\r\\\n", "", players %>% html_text())
 names <- gsub("\\\t\\\t\\\t\\\t", "", names)
 
 # for every player page, his historical ranking page is "rankings-history" instead of "overview"
+ov.url <- paste0("http://www.atpworldtour.com", links)
 links <- paste0("http://www.atpworldtour.com", gsub("overview", "rankings-history", links))
 names(links) <- names
+
+# Get the nationality of each player
+nat <- url %>% 
+  html_nodes(".country-item")
+nat <- toupper(gsub(".*flags\\/(.*)\\.(svg|png).*", "\\1", nat))
+names(nat) <- names
+
+write.csv(nat, file = "input/alln1_nationlity.csv")
+
 ```
 ## Download historical ranking of n°1s
 
@@ -85,6 +95,17 @@ for (i in seq_along(atp)) {
 }
 stopifnot(which(n1.ranking == 0) != integer(0))
 write.csv(n1.ranking, file = "input/alln1_ATP_ranking.csv", row.names = T)
+
+
+# get player DOB
+dob <- sapply(ov.url, function(url) {
+  cat("\n", url)
+  dob <- read_html(url) %>% 
+    html_nodes(".table-birthday")
+  gsub(".*(\\d{4}\\.\\d{2}\\.\\d{2}).*", "\\1", dob)
+})
+names(dob) <- names
+write.csv(dob, file = "input/alln1_dob.csv")
 
 ```
 

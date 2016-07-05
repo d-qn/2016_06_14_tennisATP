@@ -1,0 +1,141 @@
+---
+title: "youngPlayersVsPopGDP"
+author: "Duc-Quang Nguyen"
+date: "20 June 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(magrittr)
+library(dplyr)
+library(tidyr)
+library(swiTheme)
+library(countrycode)
+library(WDI)
+```
+
+```{r getData}
+getWBdata <- F
+
+data.file <- "data/tennisStats.csv"
+input.file <-  "input/tennis_youngPlayers.csv"
+trad.file <- "input/"
+
+data.read <- read.csv(data.file, skip = 2, stringsAsFactors = F)
+data.read %<>% select(-`GDP..at.market.prices....`, -`Licensed.players..2014.`, 
+  -`Recreational.players..2014.`, -`Number.of.courts..2014.`)
+data.read$iso2c <- countrycode(data.read$Country, "country.name", "iso2c")
+
+if(exists("trad.file")) {
+  txt <- read.csv(trad.file, row.names = 1, stringsAsFactors = F)
+  # discard incomplete translations
+  cidx <- unique(which(txt =="" | is.na(txt), T)[,2])
+  if(length(cidx > 0)) {
+    warning(paste(colnames(txt)[cidx], collapse = "\t"), " languages will be discarded!", "\n")
+    txt <- txt[,-cidx, drop = F]
+  }
+  colnames(txt)  
+}
+
+if(getWBdata) {
+  # get GDP per capita at PPP 
+  data.dl <- WDI(
+    indicator = 'NY.GDP.PCAP.PP.CD',
+    start = 2000,  
+    end = 2016, 
+    extra = TRUE, 
+    cache = NULL
+  )
+  colnames(data.dl)[3] <- 'value'
+  
+  data.wb <- data.dl %>% 
+    select(-capital, -longitude, -latitude, -lending, -income) %>%
+    arrange(year) %>%
+    filter(!is.na(value))
+  # for each country get the latest observation
+  data.wb %<>% group_by(iso2c) %>% dplyr::summarise(gdp = last(value)) %>% ungroup()
+  data.wb %<>% filter(iso2c %in% data.read$iso2c)
+  
+  data <- right_join(data.read, data.wb)
+  
+  write.csv(data, file = input.file, row.names = F)  
+} else {
+  data <- read.csv(input.file, check.names = F, row.names = NULL)
+}
+
+```
+
+
+```{r chart}
+library(htmltools)
+library(swiRcharts)
+library(highcharter)
+
+data %<>% rename(nYoungPlayer = `Number.of.players.aged.21.or.under.in.ATP.top.500`, population = `Population..2014.`)
+
+for (lang in colnames(txt)) {
+  
+  dd <- data
+    
+    
+  ## create fancy tooltip as html table
+  data$name <- paste0(
+    '<table cellpadding="1" style="line-height:1.2">',
+    '<tr><td><strong>', data$Country,'</strong></td></tr>',
+    '<tr><td>', "Number of ≤21 years in the ATP 500", ': ', 
+    data$nYoungPlayer, '</td></tr>',
+    '<tr><td>', "GDP per capita (PPP, USD)", ": ", round(data$gdp, 0), '</td></tr>',
+    '<tr><td>', "Population", "(millions): ", round(data$population / 10^6, 1), '</td></tr>',
+    '</table>')
+  
+  
+  hSeries <- hSeries2(
+    data.frame(
+      x = data$nYoungPlayer,
+      y = data$gdp,
+      z = data$population,
+      name = data$name,
+      series = data$region
+    ), 
+    "series")
+  
+  bc <- highchart(height = 500) %>%
+    hc_chart(type = "bubble") %>%
+    hc_add_series_list(hSeries) %>% 
+    hc_tooltip(
+      formatter = JS("function() { return  this.point.name;}"), 
+      useHTML = TRUE,
+      borderWidth = 2
+    )
+  
+  bc <- bc %>% 
+    hc_yAxis(
+      title = list(text = "GDP per capita (in thousands USD, PPP)"),
+      labels = list(formatter = JS("function() { return this.value / 1000;}")),
+      ceiling = max(data$gdp) + 5000, floor = 0
+    ) %>%
+    hc_xAxis(title = list(text = "Number of players less or 21 years old in the ATP 500"), tickInterval = 1) %>%
+    hc_colors(swi_rpal) %>%
+    hc_plotOptions(bubble = list(maxSize = 100)) %>%
+    hc_add_theme(hc_theme_swi) %>%
+    hc_chart(spacing = c(10, 4, 4, 10)) %>%
+    hc_title(text = "Young tennis players in the top 500 ATP") %>%
+    hc_subtitle(text = "Number of players less or 21 years old in the ATP 500 by country. GDP per capita and population")
+  
+  save_html(
+    tags$html(
+      tags$head(includeHTML(style_swi_highcharter())),
+      tags$body(    
+        # h2("asdfsadf"),
+        #div(class = "descr", HTML("")),
+        div(class="graphic", bc),
+        # div(id = "cite", HTML(source)),
+        HTML(iframeresizer)
+      )
+    ), file = "youngTennisPlayers500.html", libdir = "js"
+  )     
+}
+
+
+  
+```

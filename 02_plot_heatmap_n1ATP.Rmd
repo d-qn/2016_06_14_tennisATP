@@ -13,27 +13,46 @@ library(tidyr)
 library(ggplot2)
 library(scales)
 library(swiTheme)
-library(ggiraph)
 library(viridisLite)
+library(htmltools)
+library(swiRcharts)
+library(RColorBrewer)
 
 atpRanking.file <- "input/alln1_ATP_ranking.csv"
+n1_nationality.file <- "input/alln1_nationlity.csv"
+trad.file <- "input/All n°1 ATP ranking heatmap - Sheet1.csv"
+annotation.file <- "input/All n°1 ATP ranking heatmap - annotations.csv"
 
+if(exists("trad.file")) {
+  txt <- read.csv(trad.file, row.names = 1, stringsAsFactors = F)
+  # discard incomplete translations
+  cidx <- unique(which(txt =="" | is.na(txt), T)[,2])
+  if(length(cidx > 0)) {
+    warning(paste(colnames(txt)[cidx], collapse = "\t"), " languages will be discarded!", "\n")
+    txt <- txt[,-cidx, drop = F]
+  }
+  colnames(txt)  
+}
+
+if(exists("annotation.file")) {
+    annot <- read.csv(annotation.file, row.names = 1, stringsAsFactors = F)  
+    stopifnot(all(rownames(annot) %in% rownames(txt)))
+    annot$x <- as.Date(paste0(annot$x, "-01-01"))
+    annot$x0 <- as.Date(paste0(annot$x0, "-06-01"))
+    annot$x1 <- as.Date(paste0(annot$x1, "-06-01"))
+ }
 ```
 
 ```{r shape data}
 # load data
 n1rank <- read.csv(atpRanking.file, check.names = F, row.names = 1)
+
+nat <- read.csv(n1_nationality.file, stringsAsFactors = F)
+nat <- structure(nat[,2], names = nat[,1])
 # convert to zoo
 zn1 <- zoo(as.matrix(n1rank), as.Date(row.names(n1rank), format = "%m/%d/%Y"))
-
 dates <- index(zn1)
-
 date.reg <- c(seq(min(dates), max(dates), 7))
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TO add AND CHECK !!!!!!!!!!!!
-# ugly hack to add another date (for connors he was for one week n2, not visible otherwise)
-#date.reg <- c(date.reg, as.Date("23.08.1977", "%d.%m.%Y"))
-#date.reg <- c(date.reg, as.Date("1977-08-23", "%Y-%m-%d"))
 date.reg <- date.reg[order(date.reg)]
 
 idx <- findInterval(date.reg, index(zn1), rightmost.closed = FALSE, all.inside = FALSE)
@@ -56,12 +75,12 @@ rownames(n1) <- NULL
 n1 %<>% gather(player, rank, -dates)
 n1$lrank <- log10(n1$rank)
 
-# order data.frame by chronological order of players got n1
+# order data.frame by chronological order of players when the reached n1
 n1.dates <- n1 %>% 
   group_by(player) %>% summarise(first1 = dates[min(which(rank == 1))]) %>% 
   ungroup() %>% arrange(first1)
-# order factor player
-n1$player <- factor(n1$player, levels = n1.dates$player)
+#  make ordered factor player
+n1$player <- factor(n1$player, levels = rev(n1.dates$player))
 
 # check dates spacing
 stopifnot(all(diff(unique(n1$dates))==7))
@@ -70,10 +89,14 @@ narow <- n1 %>% group_by(dates) %>%
   summarise(narow = all(is.na(rank))) %>% ungroup()
 naidx <- which(narow %>% select(narow) %>% unlist())
 if(length(naidx)>0) {
-  warning(narow[naidx,] )
+  warning(narow[naidx,], " hack will ensue")
+  naDates <- as.Date(unlist(narow[naidx,'dates']), use.names = F)
+  
+  n1$dates.end <- n1$dates + 7
+  # for NA dates, discard data and add a week to dates.end
+  n1 %<>% filter(!dates %in% naDates)
+  n1[which(n1$dates %in% (naDates-7)), 'dates.end'] <- n1[which(n1$dates %in% (naDates-7)), 'dates.end'] + 7
 }
-# create dates end
-#n1 %<>% group_by(player) %>% mutate(dates.end = c(diff(dates), 7))
 
 ```
 
@@ -81,61 +104,141 @@ if(length(naidx)>0) {
 
 * Check this use of [geom_rect](https://nsaunders.wordpress.com/2015/04/15/project-tycho-ggplot2-and-the-shameless-stealing-of-blog-ideas/)
 
-```{r heatmap}
+```{r heatmap variant without faceting}
+## Helpers and settings
 htheme <- function() {
-  swi_theme(y_gridlines = F) + 
+  swi_theme(y_gridlines = F, title_family = "OpenSans-CondensedBold") + 
     theme(
+      plot.subtitle = element_text(size=15, margin=margin(b = 10)),
+      plot.title = element_text(size = 19, margin=margin(b = 10)),
+      axis.ticks.length = unit(1.4, "pt"),
       axis.ticks.y = element_blank(),
       axis.text.y = element_blank(),
-      strip.text.y = element_text(angle = 0, hjust = 0),
-      axis.line.x = element_blank(),
-      axis.text.x = element_text(angle = 90, hjust = 0.5),
-      panel.margin = unit(0.08, "lines"),
-      legend.position=c(0.8, 0.95),
-      legend.margin = unit(0, "lines"),
-      legend.key.height = unit(0.7, "lines"),
-      legend.key.width = unit(0.8, "lines"),
-      legend.direction = "horizontal"
+      axis.line = element_blank(),
+      axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 10),
+      axis.title = element_blank(),
+      legend.text = element_text(size = 11, vjust = 0),
+      legend.title = element_text(
+        size = 13, family = "OpenSans-CondensedBold", hjust = 0.5, vjust = 1),
+      legend.position = c(1, 1.08),
+      legend.justification = c(1,1),
+      legend.key.height = unit(1.8, "lines"),
+      legend.key.width = unit(1.5, "lines"),
+      plot.margin = unit(c(0.1, 0.1, 0.1, 0.1), "cm")
     )
 }
 
-# move strip.text
-# http://stackoverflow.com/questions/11979017/changing-facet-label-to-math-formula-in-ggplot2
+rect.h <- 9.5
+rect.spacing <- 0.5
+rect.y <- rect.h + rect.spacing
+plab.offset <- 7 * 23
 
+# define ymin & ymax for geom_rect
+n1r <- do.call(rbind, lapply(1:nlevels(n1$player), function(i) {
+  cbind(
+    n1 %>% filter(player == levels(n1$player)[i]), 
+    ymin = rect.y * (i-1),
+    ymax = (rect.y * (i-1)) + rect.h
+  )
+}))
+n1r %<>% group_by(player) %>% mutate(y = (ymin + ymax + rect.spacing) / 2) %>% ungroup()
 
-hatp <- ggplot(n1) + 
-  geom_rect(aes(xmin = dates, xmax = dates + 7, ymin = 0, ymax = 9, fill = lrank)) + 
-  facet_grid(player ~ .) + 
-  htheme() +
-  # to overwrite colour label scale legend
-  scale_fill_gradientn(
-    name = "ATP ranking",
-    colours = viridis(1000, option = "D"),
-    na.value = "transparent",
-    labels=as.character(c(10^0, 10^1, 10^2, 10^3))
-  ) +
-  scale_x_date(breaks = pretty_breaks(20), expand = c(0, 0))
+# define the rect labels, player name
+player.lab <- n1r %>% group_by(player, y) %>% 
+  summarise(x = dates[max(which(!is.na(rank)))] + plab.offset) %>% ungroup()
+# hack to manually aligned some player names vertically
+player.lab.aligned <- player.lab
+player.lab.aligned[25:24, 'x'] <- player.lab[25, 'x']
+player.lab.aligned[23:18, 'x'] <- player.lab[player.lab$player == "Stefan Edberg", 'x']
+player.lab.aligned[17:16, 'x'] <- player.lab[player.lab$player == "Jim Courier", 'x']
+player.lab.aligned[13:7, 'x'] <- player.lab[13, 'x']
+player.lab.aligned[1:5, 'x'] <- player.lab[1, 'x']
+# add country names to player names
+player.lab.aligned$player <- paste0(player.lab.aligned$player, " (", nat[match(player.lab.aligned$player, names(nat))], ")")
 
-annot <- read.table(text=
-"date|player|hjust|text
-1980-08-23|Boris Becker|0|asdfs adfsad<br>asdfdsa",
-sep="|", header=TRUE, stringsAsFactors=FALSE)
-annot$date <- as.Date(annot$date)
-annot$player <- factor(annot$player, levels = levels(n1$player))
-annot$text <- gsub("<br>", "\n", annot$text)
+years <- unique(format(unique(n1r$dates), "%Y"))
 
-subtitle <- "Since its creation in 1973, the Association of Tennis Players (ATP) ranking became every tennis player’s dream. Over 40 years, only 25 players have reached the summit, with just 16 finishing the season as year-end No. 1. The high resolution weekly ranking of these 25 players is shown under."
+## PLOT ##
+lang <- 'EN'
 
-hatp +  
-  labs(
-    title = paste0( as.numeric(round(diff(range(dates)) / 365)), 
-      "year of ATP ranking - ", nlevels(n1$player), 
-      " number 1 tennis players"),
-    subtitle = subtitle) +
-  annotate(
-    aes(x=annot$date, y = 4, label=annot$text, hjust=annot$hjust),
-    lineheight=0.95, size=3, label.size=0, color="#2b2b2b"
+for (lang in colnames(txt)) {
+  png.outfile <- paste0("heatmap_alln1ATP_", lang, ".png")
+  html.outfile <-  paste0("heatmap_alln1ATP_", lang, ".html")
+
+  anno <- cbind(annot, txt = txt[rownames(annot), lang], stringsAsFactors = F)
+  # apply linebreaks to each text chunk
+  for(i in 1:nrow(anno)) {
+    anno[i, 'txt'] <- paste0(
+      strwrap(anno[i, 'txt'], width = anno[i, 'lineLength']), collapse ="\n"
     )
+  }
 
+  hatp <- ggplot(n1r) + 
+    geom_rect(
+      aes(xmin = dates, xmax = dates.end, ymin = ymin, ymax = ymax, fill = lrank)) + 
+    htheme() +
+    # to overwrite colour label scale legend
+    scale_fill_gradientn(
+      name = "ATP ranking",
+      colours = rev(colorRampPalette(brewer.pal(9,"RdPu"))(255)), #viridis(1000, option = "D"),
+      na.value = "transparent",
+      labels = as.character(c(10^0, 10^1, 10^2, 10^3))
+    ) + 
+    scale_x_date(
+      name = "",
+      breaks = c(min(n1r$dates), as.Date(paste0(years[-c(1)], "-01-01")), max(n1r$dates)),
+      labels =  c(as.character(min(n1r$dates)), gsub("(1974|2016)", "", years[-c(1)]), as.character(max(n1r$dates))),
+      expand = c(0, 0), 
+      limits = c(min(n1r$dates), max(n1r$dates) + 2300)
+    ) +
+    scale_y_continuous(expand = c(0.002, 0)) + 
+    geom_text(
+      data = player.lab.aligned,
+      aes(x = x, y = y, label = player), 
+      hjust = 0, vjust = 0.5,
+      family = "OpenSans-CondensedLight",
+      size = 4.5, color="#1a1a1a") +
+    labs(title = txt["main.title", lang], subtitle = txt["descr", lang])
+  
+  hatp2 <- hatp + geom_text(
+    data = anno, 
+    aes(x = x, y = y, label = txt, hjust = hjust, vjust = vjust),
+    family = "OpenSans-CondensedLight", size = 3.7, color="#737373"
+  ) + geom_segment(
+    data = anno, 
+    aes(x = x0, xend = x1, y = y0, yend = y1),
+    colour = '#a6a6a6', alpha = 0.5, size = 0.15,
+    arrow = arrow(angle = 20, length = unit(0.01, "npc"), type = "closed")
+  )
+  
+  png(png.outfile, width = 3478, height = 2000, res = 270, pointsize = 9)
+  print(hatp2)
+  dev.off()
+  source <- paste0(
+    txt['source', lang], ": ", 
+    htmlLink(txt['source.link', lang], txt['source.name', lang]), " | ", 
+    htmlLink("http://www.swissinfo.ch", "swissinfo.ch"), " | ",
+    htmlLink("https://twitter.com/duc_qn", "Duc-Quang Nguyen")
+  )
+  
+  save_html(
+    tags$html(
+      tags$head(includeHTML("styles.html")),
+      tags$body(    
+        #h2( txt["page.title", lang]),
+        div(class="graphic", 
+            img(src = png.outfile, width= "100%")
+        ),
+        div(id = "cite", HTML(source)),
+        HTML(iframeresizer)  
+      )), file = html.outfile
+  )
+}
+
+```
+
+```{r snippets, include = F}
+
+as.data.frame(n1r[!duplicated(n1r$player),])
 
 ```
