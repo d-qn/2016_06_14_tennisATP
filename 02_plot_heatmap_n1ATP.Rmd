@@ -13,7 +13,6 @@ library(tidyr)
 library(ggplot2)
 library(scales)
 library(swiTheme)
-library(viridisLite)
 library(htmltools)
 library(swiRcharts)
 library(RColorBrewer)
@@ -75,7 +74,7 @@ rownames(n1) <- NULL
 n1 %<>% gather(player, rank, -dates)
 n1$lrank <- log10(n1$rank)
 
-# order data.frame by chronological order of players when the reached n1
+# order data.frame by chronological order of players when they reached n1
 n1.dates <- n1 %>% 
   group_by(player) %>% summarise(first1 = dates[min(which(rank == 1))]) %>% 
   ungroup() %>% arrange(first1)
@@ -104,10 +103,11 @@ if(length(naidx)>0) {
 
 * Check this use of [geom_rect](https://nsaunders.wordpress.com/2015/04/15/project-tycho-ggplot2-and-the-shameless-stealing-of-blog-ideas/)
 
-```{r heatmap variant without faceting}
+```{r heatmap}
 ## Helpers and settings
-htheme <- function() {
-  swi_theme(y_gridlines = F, title_family = "OpenSans-CondensedBold") + 
+
+htheme <- function(base_family = "OpenSans-CondensedLight") {
+  swi_theme(y_gridlines = F, base_family = base_family) + 
     theme(
       plot.subtitle = element_text(size=15, margin=margin(b = 10)),
       plot.title = element_text(size = 19, margin=margin(b = 10)),
@@ -118,8 +118,7 @@ htheme <- function() {
       axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 10),
       axis.title = element_blank(),
       legend.text = element_text(size = 11, vjust = 0),
-      legend.title = element_text(
-        size = 13, family = "OpenSans-CondensedBold", hjust = 0.5, vjust = 1),
+      legend.title = element_text(size = 13, hjust = 0.5, vjust = 1),
       legend.position = c(1, 1.08),
       legend.justification = c(1,1),
       legend.key.height = unit(1.8, "lines"),
@@ -153,8 +152,9 @@ player.lab.aligned[23:18, 'x'] <- player.lab[player.lab$player == "Stefan Edberg
 player.lab.aligned[17:16, 'x'] <- player.lab[player.lab$player == "Jim Courier", 'x']
 player.lab.aligned[13:7, 'x'] <- player.lab[13, 'x']
 player.lab.aligned[1:5, 'x'] <- player.lab[1, 'x']
-# add country names to player names
-player.lab.aligned$player <- paste0(player.lab.aligned$player, " (", nat[match(player.lab.aligned$player, names(nat))], ")")
+player.lab.aligned$key <- gsub(" ", "\\.", player.lab.aligned$player)
+# tmp <- data.frame(key = gsub(" ", "\\.", player.lab.aligned$player), value = paste0(player.lab.aligned$player, " (", nat[match(player.lab.aligned$player, names(nat))], ")"))
+# write.csv(tmp, file = "input/number1Player_names.csv", row.names = F)
 
 years <- unique(format(unique(n1r$dates), "%Y"))
 
@@ -164,8 +164,12 @@ lang <- 'EN'
 for (lang in colnames(txt)) {
   png.outfile <- paste0("heatmap_alln1ATP_", lang, ".png")
   html.outfile <-  paste0("heatmap_alln1ATP_", lang, ".html")
-
+  teaser.outfile <- "teaser_alln1ATP.png"
+  
+  # get the annotations and player name translations
   anno <- cbind(annot, txt = txt[rownames(annot), lang], stringsAsFactors = F)
+  player.lab.aligned$player <- txt[player.lab.aligned$key, lang]
+  
   # apply linebreaks to each text chunk
   for(i in 1:nrow(anno)) {
     anno[i, 'txt'] <- paste0(
@@ -176,11 +180,11 @@ for (lang in colnames(txt)) {
   hatp <- ggplot(n1r) + 
     geom_rect(
       aes(xmin = dates, xmax = dates.end, ymin = ymin, ymax = ymax, fill = lrank)) + 
-    htheme() +
+   htheme(base_family = txt["base.typeface", lang]) +
     # to overwrite colour label scale legend
     scale_fill_gradientn(
       name = "ATP ranking",
-      colours = rev(colorRampPalette(brewer.pal(9,"RdPu"))(255)), #viridis(1000, option = "D"),
+      colours = rev(colorRampPalette(brewer.pal(9,"RdPu"))(255)),
       na.value = "transparent",
       labels = as.character(c(10^0, 10^1, 10^2, 10^3))
     ) + 
@@ -189,25 +193,36 @@ for (lang in colnames(txt)) {
       breaks = c(min(n1r$dates), as.Date(paste0(years[-c(1)], "-01-01")), max(n1r$dates)),
       labels =  c(as.character(min(n1r$dates)), gsub("(1974|2016)", "", years[-c(1)]), as.character(max(n1r$dates))),
       expand = c(0, 0), 
-      limits = c(min(n1r$dates), max(n1r$dates) + 2300)
+      limits = c(min(n1r$dates), max(n1r$dates) + as.numeric(txt['xaxis.offset', lang]))
     ) +
     scale_y_continuous(expand = c(0.002, 0)) + 
     geom_text(
       data = player.lab.aligned,
       aes(x = x, y = y, label = player), 
       hjust = 0, vjust = 0.5,
-      family = "OpenSans-CondensedLight",
+      family = txt["base.typeface", lang],
       size = 4.5, color="#1a1a1a") +
-    labs(title = txt["main.title", lang], subtitle = txt["descr", lang])
+    labs(title = txt["main.title", lang], subtitle = txt["descr", lang]) +
+    theme(
+      plot.title = element_text(family = txt["title.typeface", lang]),
+      legend.title = element_text(family = txt["title.typeface", lang]),
+      plot.subtitle = element_text(family = txt["subtitle.typeface", lang])
+    )
+  
+  if(!file.exists(teaser.outfile)) {
+    png(teaser.outfile, width = 3478, height = 2000, res = 260, pointsize = 9)
+    print(hatp)
+    dev.off()    
+  }
   
   hatp2 <- hatp + geom_text(
     data = anno, 
     aes(x = x, y = y, label = txt, hjust = hjust, vjust = vjust),
-    family = "OpenSans-CondensedLight", size = 3.7, color="#737373"
+    family = txt["base.typeface", lang], size = 3.9, color="#737373"
   ) + geom_segment(
     data = anno, 
     aes(x = x0, xend = x1, y = y0, yend = y1),
-    colour = '#a6a6a6', alpha = 0.5, size = 0.15,
+    colour = '#a6a6a6', alpha = 0.5, size = 0.2,
     arrow = arrow(angle = 20, length = unit(0.01, "npc"), type = "closed")
   )
   
