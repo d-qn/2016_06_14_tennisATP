@@ -184,10 +184,10 @@ if(length(naidx)&gt;0) {
 </ul>
 <pre class="r"><code>## Helpers and settings
 
-htheme &lt;- function(base_family = &quot;OpenSans-CondensedLight&quot;) {
+htheme &lt;- function(base_family = &quot;OpenSans-CondensedLight&quot;, subtitle.size = 15) {
   swi_theme(y_gridlines = F, base_family = base_family) + 
     theme(
-      plot.subtitle = element_text(size=15, margin=margin(b = 10)),
+      plot.subtitle = element_text(size=subtitle.size, margin=margin(b = 10)),
       plot.title = element_text(size = 19, margin=margin(b = 10)),
       axis.ticks.length = unit(1.4, &quot;pt&quot;),
       axis.ticks.y = element_blank(),
@@ -237,7 +237,7 @@ player.lab.aligned$key &lt;- gsub(&quot; &quot;, &quot;\\.&quot;, player.lab.ali
 years &lt;- unique(format(unique(n1r$dates), &quot;%Y&quot;))
 
 ## PLOT ##
-lang &lt;- 'EN'
+lang &lt;- 'ZH'
 
 for (lang in colnames(txt)) {
   png.outfile &lt;- paste0(&quot;heatmap_alln1ATP_&quot;, lang, &quot;.png&quot;)
@@ -250,18 +250,16 @@ for (lang in colnames(txt)) {
   
   # apply linebreaks to each text chunk
   for(i in 1:nrow(anno)) {
-    anno[i, 'txt'] &lt;- paste0(
-      strwrap(anno[i, 'txt'], width = anno[i, 'lineLength']), collapse =&quot;\n&quot;
-    )
+    anno[i, 'txt'] &lt;- paste0(strwrap(anno[i, 'txt'], width = anno[i, 'lineLength']), collapse =&quot;\n&quot;)
   }
 
   hatp &lt;- ggplot(n1r) + 
     geom_rect(
       aes(xmin = dates, xmax = dates.end, ymin = ymin, ymax = ymax, fill = lrank)) + 
-   htheme(base_family = txt[&quot;base.typeface&quot;, lang]) +
+   htheme(base_family = txt[&quot;base.typeface&quot;, lang], subtitle.size = as.numeric(txt['subtitle.size', lang])) +
     # to overwrite colour label scale legend
     scale_fill_gradientn(
-      name = &quot;ATP ranking&quot;,
+      name = txt[&quot;legend.title&quot;, lang],
       colours = rev(colorRampPalette(brewer.pal(9,&quot;RdPu&quot;))(255)),
       na.value = &quot;transparent&quot;,
       labels = as.character(c(10^0, 10^1, 10^2, 10^3))
@@ -279,7 +277,7 @@ for (lang in colnames(txt)) {
       aes(x = x, y = y, label = player), 
       hjust = 0, vjust = 0.5,
       family = txt[&quot;base.typeface&quot;, lang],
-      size = 4.5, color=&quot;#1a1a1a&quot;) +
+      size = as.numeric(txt['player.size', lang]), color=&quot;#1a1a1a&quot;) +
     labs(title = txt[&quot;main.title&quot;, lang], subtitle = txt[&quot;descr&quot;, lang]) +
     theme(
       plot.title = element_text(family = txt[&quot;title.typeface&quot;, lang]),
@@ -296,7 +294,7 @@ for (lang in colnames(txt)) {
   hatp2 &lt;- hatp + geom_text(
     data = anno, 
     aes(x = x, y = y, label = txt, hjust = hjust, vjust = vjust),
-    family = txt[&quot;base.typeface&quot;, lang], size = 3.9, color=&quot;#737373&quot;
+    family = txt[&quot;base.typeface&quot;, lang], size = as.numeric(txt['annot.size', lang]), color=&quot;#737373&quot;
   ) + geom_segment(
     data = anno, 
     aes(x = x0, xend = x1, y = y0, yend = y1),

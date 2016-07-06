@@ -106,10 +106,10 @@ if(length(naidx)>0) {
 ```{r heatmap}
 ## Helpers and settings
 
-htheme <- function(base_family = "OpenSans-CondensedLight") {
+htheme <- function(base_family = "OpenSans-CondensedLight", subtitle.size = 15) {
   swi_theme(y_gridlines = F, base_family = base_family) + 
     theme(
-      plot.subtitle = element_text(size=15, margin=margin(b = 10)),
+      plot.subtitle = element_text(size=subtitle.size, margin=margin(b = 10)),
       plot.title = element_text(size = 19, margin=margin(b = 10)),
       axis.ticks.length = unit(1.4, "pt"),
       axis.ticks.y = element_blank(),
@@ -159,7 +159,7 @@ player.lab.aligned$key <- gsub(" ", "\\.", player.lab.aligned$player)
 years <- unique(format(unique(n1r$dates), "%Y"))
 
 ## PLOT ##
-lang <- 'EN'
+lang <- 'ZH'
 
 for (lang in colnames(txt)) {
   png.outfile <- paste0("heatmap_alln1ATP_", lang, ".png")
@@ -172,18 +172,16 @@ for (lang in colnames(txt)) {
   
   # apply linebreaks to each text chunk
   for(i in 1:nrow(anno)) {
-    anno[i, 'txt'] <- paste0(
-      strwrap(anno[i, 'txt'], width = anno[i, 'lineLength']), collapse ="\n"
-    )
+    anno[i, 'txt'] <- paste0(strwrap(anno[i, 'txt'], width = anno[i, 'lineLength']), collapse ="\n")
   }
 
   hatp <- ggplot(n1r) + 
     geom_rect(
       aes(xmin = dates, xmax = dates.end, ymin = ymin, ymax = ymax, fill = lrank)) + 
-   htheme(base_family = txt["base.typeface", lang]) +
+   htheme(base_family = txt["base.typeface", lang], subtitle.size = as.numeric(txt['subtitle.size', lang])) +
     # to overwrite colour label scale legend
     scale_fill_gradientn(
-      name = "ATP ranking",
+      name = txt["legend.title", lang],
       colours = rev(colorRampPalette(brewer.pal(9,"RdPu"))(255)),
       na.value = "transparent",
       labels = as.character(c(10^0, 10^1, 10^2, 10^3))
@@ -201,7 +199,7 @@ for (lang in colnames(txt)) {
       aes(x = x, y = y, label = player), 
       hjust = 0, vjust = 0.5,
       family = txt["base.typeface", lang],
-      size = 4.5, color="#1a1a1a") +
+      size = as.numeric(txt['player.size', lang]), color="#1a1a1a") +
     labs(title = txt["main.title", lang], subtitle = txt["descr", lang]) +
     theme(
       plot.title = element_text(family = txt["title.typeface", lang]),
@@ -218,7 +216,7 @@ for (lang in colnames(txt)) {
   hatp2 <- hatp + geom_text(
     data = anno, 
     aes(x = x, y = y, label = txt, hjust = hjust, vjust = vjust),
-    family = txt["base.typeface", lang], size = 3.9, color="#737373"
+    family = txt["base.typeface", lang], size = as.numeric(txt['annot.size', lang]), color="#737373"
   ) + geom_segment(
     data = anno, 
     aes(x = x0, xend = x1, y = y0, yend = y1),

@@ -1,40 +1,44 @@
 code,EN,FR,DE,IT,PT,RU,ES,JA,ZH
-main.title,Fifty shades of play - the complete history of every tennis player number 1 in the ATP ranking,,,,,,,,
-descr,"Since its creation in 1973, only 25 players have reached the summit of the Association of Tennis Players (ATP) ranking. The weekly ranking of these 25 players is shown under.",,,,,,,,
+main.title,Fifty shades of play - the complete history of every No. 1 tennis player in the ATP ranking,,,,,Пятьдесят оттенков тенниса - кто и когда был первым в мировом рейтинге ATP,,,网球世界的“50度灰”：盘点ATP世界网球球员排行榜历届冠军
+descr,"Since its creation in 1973, only 25 players have reached the summit of the Association of Tennis Professionals (ATP) ranking. The weekly ranking of these 25 players is shown below.",,,,,,,,自1973年ATP排行榜诞生，迄今只有25位选手荣登职业网球联合会( the Association of Tennis Professionals，缩写：ATP)排行榜的榜首。他们的周积分排名详情请参见下图。
 source,Source,source,Quelle,Fonte,fonte,Источник,Fuente,出典,来源
-source.name,ATP Word Tour,,,,,,,,
+source.name,ATP Word Tour,,,,,,,,ATP世界巡回赛
 source.link,http://www.atpworldtour.com,http://www.atpworldtour.com,http://www.atpworldtour.com,http://www.atpworldtour.com,http://www.atpworldtour.com,http://www.atpworldtour.com,http://www.atpworldtour.com,http://www.atpworldtour.com,http://www.atpworldtour.com
-title.typeface,OpenSans-CondensedBold,OpenSans-CondensedBold,OpenSans-CondensedBold,OpenSans-CondensedBold,OpenSans-CondensedBold,OpenSans-CondensedBold,OpenSans-CondensedBold,,
-base.typeface,OpenSans-CondensedLight,OpenSans-CondensedLight,OpenSans-CondensedLight,OpenSans-CondensedLight,OpenSans-CondensedLight,OpenSans-CondensedLight,OpenSans-CondensedLight,,
-subtitle.typeface,OpenSans-CondensedLightItalic,OpenSans-CondensedLightItalic,OpenSans-CondensedLightItalic,OpenSans-CondensedLightItalic,OpenSans-CondensedLightItalic,OpenSans-CondensedLightItalic,OpenSans-CondensedLightItalic,,
-xaxis.offset,2300,2300,2300,2300,2300,2300,2300,2300,2300
-gap,"At its beginning, the ATP had ""to borrow"" computer time to establish its rankings. There was no personal computer back then. Many weeks, they could not get the computer to work, so rankings were calculated by hand. Before 1984, the ranking was intermittent with many gaps.",,,,,,,,
-connors,"Connors remained No. 1 for 160 consecutive weeks, a record held for 30 years before being overtaken by Federer in 2007",,,,,,,,
-sampras,"Sampras stayed No. 1 for a total 286 weeks, he is 2nd at the most total weeks as ATP leader",,,,,,,,
-agassi,"Despite numerous inuries, at 33 years old Agassi has been the oldest No. 1",,,,,,,,
-federer,Federer holds the record for the most total weeks (302) and most consecutive weeks at number 1 (237),,,,,,,,
-Novak.Djokovic,Novak Djokovic (SRB),Novak Djokovic (SRB),Novak Djokovic (SRB),Novak Djokovic (SRB),Novak Djokovic (SRB),,Novak Djokovic (SRB),,
-Rafael.Nadal,Rafael Nadal (ESP),Rafael Nadal (ESP),Rafael Nadal (ESP),Rafael Nadal (ESP),Rafael Nadal (ESP),,Rafael Nadal (ESP),,
-Roger.Federer,Roger Federer (SUI),Roger Federer (SUI),Roger Federer (SUI),Roger Federer (SUI),Roger Federer (SUI),,Roger Federer (SUI),,
-Andy.Roddick,Andy Roddick (USA),Andy Roddick (USA),Andy Roddick (USA),Andy Roddick (USA),Andy Roddick (USA),,Andy Roddick (USA),,
-Juan.Carlos.Ferrero,Juan Carlos Ferrero (ESP),Juan Carlos Ferrero (ESP),Juan Carlos Ferrero (ESP),Juan Carlos Ferrero (ESP),Juan Carlos Ferrero (ESP),,Juan Carlos Ferrero (ESP),,
-Lleyton.Hewitt,Lleyton Hewitt (AUS),Lleyton Hewitt (AUS),Lleyton Hewitt (AUS),Lleyton Hewitt (AUS),Lleyton Hewitt (AUS),,Lleyton Hewitt (AUS),,
-Gustavo.Kuerten,Gustavo Kuerten (BRA),Gustavo Kuerten (BRA),Gustavo Kuerten (BRA),Gustavo Kuerten (BRA),Gustavo Kuerten (BRA),,Gustavo Kuerten (BRA),,
-Marat.Safin,Marat Safin (RUS),Marat Safin (RUS),Marat Safin (RUS),Marat Safin (RUS),Marat Safin (RUS),,Marat Safin (RUS),,
-Patrick.Rafter,Patrick Rafter (AUS),Patrick Rafter (AUS),Patrick Rafter (AUS),Patrick Rafter (AUS),Patrick Rafter (AUS),,Patrick Rafter (AUS),,
-Yevgeny.Kafelnikov,Yevgeny Kafelnikov (RUS),Yevgeny Kafelnikov (RUS),Yevgeny Kafelnikov (RUS),Yevgeny Kafelnikov (RUS),Yevgeny Kafelnikov (RUS),,Yevgeny Kafelnikov (RUS),,
-Carlos.Moya,Carlos Moya (ESP),Carlos Moya (ESP),Carlos Moya (ESP),Carlos Moya (ESP),Carlos Moya (ESP),,Carlos Moya (ESP),,
-Marcelo.Rios,Marcelo Rios (CHI),Marcelo Rios (CHI),Marcelo Rios (CHI),Marcelo Rios (CHI),Marcelo Rios (CHI),,Marcelo Rios (CHI),,
-Thomas.Muster,Thomas Muster (AUT),Thomas Muster (AUT),Thomas Muster (AUT),Thomas Muster (AUT),Thomas Muster (AUT),,Thomas Muster (AUT),,
-Andre.Agassi,Andre Agassi (USA),Andre Agassi (USA),Andre Agassi (USA),Andre Agassi (USA),Andre Agassi (USA),,Andre Agassi (USA),,
-Pete.Sampras,Pete Sampras (USA),Pete Sampras (USA),Pete Sampras (USA),Pete Sampras (USA),Pete Sampras (USA),,Pete Sampras (USA),,
-Jim.Courier,Jim Courier (USA),Jim Courier (USA),Jim Courier (USA),Jim Courier (USA),Jim Courier (USA),,Jim Courier (USA),,
-Boris.Becker,Boris Becker (GER),Boris Becker (GER),Boris Becker (GER),Boris Becker (GER),Boris Becker (GER),,Boris Becker (GER),,
-Stefan.Edberg,Stefan Edberg (SWE),Stefan Edberg (SWE),Stefan Edberg (SWE),Stefan Edberg (SWE),Stefan Edberg (SWE),,Stefan Edberg (SWE),,
-Mats.Wilander,Mats Wilander (SWE),Mats Wilander (SWE),Mats Wilander (SWE),Mats Wilander (SWE),Mats Wilander (SWE),,Mats Wilander (SWE),,
-Ivan.Lendl,Ivan Lendl (USA),Ivan Lendl (USA),Ivan Lendl (USA),Ivan Lendl (USA),Ivan Lendl (USA),,Ivan Lendl (USA),,
-John.McEnroe,John McEnroe (USA),John McEnroe (USA),John McEnroe (USA),John McEnroe (USA),John McEnroe (USA),,John McEnroe (USA),,
-Bjorn.Borg,Bjorn Borg (SWE),Bjorn Borg (SWE),Bjorn Borg (SWE),Bjorn Borg (SWE),Bjorn Borg (SWE),,Bjorn Borg (SWE),,
-Jimmy.Connors,Jimmy Connors (USA),Jimmy Connors (USA),Jimmy Connors (USA),Jimmy Connors (USA),Jimmy Connors (USA),,Jimmy Connors (USA),,
-John.Newcombe,John Newcombe (AUS),John Newcombe (AUS),John Newcombe (AUS),John Newcombe (AUS),John Newcombe (AUS),,John Newcombe (AUS),,
-Ilie.Nastase,Ilie Nastase (ROU),Ilie Nastase (ROU),Ilie Nastase (ROU),Ilie Nastase (ROU),Ilie Nastase (ROU),,Ilie Nastase (ROU),,
+title.typeface,OpenSans-CondensedBold,OpenSans-CondensedBold,OpenSans-CondensedBold,OpenSans-CondensedBold,OpenSans-CondensedBold,OpenSans-CondensedBold,OpenSans-CondensedBold,PingFang SC Semibold,PingFang SC Semibold
+base.typeface,OpenSans-CondensedLight,OpenSans-CondensedLight,OpenSans-CondensedLight,OpenSans-CondensedLight,OpenSans-CondensedLight,OpenSans-CondensedLight,OpenSans-CondensedLight,PingFang SC Light,PingFang SC Light
+subtitle.typeface,OpenSans-CondensedLightItalic,OpenSans-CondensedLightItalic,OpenSans-CondensedLightItalic,OpenSans-CondensedLightItalic,OpenSans-CondensedLightItalic,OpenSans-CondensedLightItalic,OpenSans-CondensedLightItalic,PingFang SC Thin,PingFang SC Thin
+legend.title,ATP ranking,,,,,,,,ATP排名
+gap,"When it started out, the ATP had to ""borrow"" computer time to establish its rankings as personal computers weren't around yet. At times, they could not get the computer to work, so rankings were calculated by hand. Prior to 1984, the ranking was intermittent with many gaps.",,,,,,,,"在ATP诞生之初, 个人电脑并未普及, 因此ATP需借助计算机时间来记录名次排行, 但偶尔也会通过人工计分来制定排行榜。 1984年之前, 该排行榜并非每年公布一次。"
+connors,"Connors remained No. 1 for 160 consecutive weeks, a record held for 30 years before being overtaken by Federer in 2007",,,,,,,,"甘纳斯曾连续160周占据榜首。作为叱咤网坛的名将, 他的这一纪录直至2007年才被费德勒打破。"
+sampras,"Sampras stayed No. 1 for a total of 286 weeks, he is 2nd at the most weeks as ATP leader",,,,,,,,森伯斯共计有286周周计分牌名位居世界第一。
+agassi,"Despite numerous injuries, at 33 years old Agassi is the oldest No. 1",,,,,,,,"虽然伤病无数, 老将阿加西仍以33岁高龄成为年龄最大的周冠军。"
+federer,Federer holds the record for the most weeks (302) and most consecutive weeks at No. 1 (237),,,,,,,,"费德勒以302次周计分第一成为世界纪录的创造者, 同时他也连续237周位居榜首。"
+Novak.Djokovic,Novak Djokovic (SRB),Novak Djokovic (SRB),Novak Djokovic (SRB),Novak Djokovic (SRB),Novak Djokovic (SRB),,Novak Djokovic (SRB),,诺瓦克·乔科维奇(塞维利亚)
+Rafael.Nadal,Rafael Nadal (ESP),Rafael Nadal (ESP),Rafael Nadal (ESP),Rafael Nadal (ESP),Rafael Nadal (ESP),,Rafael Nadal (ESP),,拉斐尔·拿度(西班牙)
+Roger.Federer,Roger Federer (SUI),Roger Federer (SUI),Roger Federer (SUI),Roger Federer (SUI),Roger Federer (SUI),,Roger Federer (SUI),,罗杰·费德勒(瑞士)
+Andy.Roddick,Andy Roddick (USA),Andy Roddick (USA),Andy Roddick (USA),Andy Roddick (USA),Andy Roddick (USA),,Andy Roddick (USA),,安迪·罗迪克(美国)
+Juan.Carlos.Ferrero,Juan Carlos Ferrero (ESP),Juan Carlos Ferrero (ESP),Juan Carlos Ferrero (ESP),Juan Carlos Ferrero (ESP),Juan Carlos Ferrero (ESP),,Juan Carlos Ferrero (ESP),,胡安·卡洛斯·费雷罗(西班牙)
+Lleyton.Hewitt,Lleyton Hewitt (AUS),Lleyton Hewitt (AUS),Lleyton Hewitt (AUS),Lleyton Hewitt (AUS),Lleyton Hewitt (AUS),,Lleyton Hewitt (AUS),,莱顿·休伊特(澳大利亚)
+Gustavo.Kuerten,Gustavo Kuerten (BRA),Gustavo Kuerten (BRA),Gustavo Kuerten (BRA),Gustavo Kuerten (BRA),Gustavo Kuerten (BRA),,Gustavo Kuerten (BRA),,古斯塔沃·库尔滕(巴西)
+Marat.Safin,Marat Safin (RUS),Marat Safin (RUS),Marat Safin (RUS),Marat Safin (RUS),Marat Safin (RUS),,Marat Safin (RUS),,马拉特·萨芬(俄罗斯)
+Patrick.Rafter,Patrick Rafter (AUS),Patrick Rafter (AUS),Patrick Rafter (AUS),Patrick Rafter (AUS),Patrick Rafter (AUS),,Patrick Rafter (AUS),,帕特里克·拉夫特(澳大利亚)
+Yevgeny.Kafelnikov,Yevgeny Kafelnikov (RUS),Yevgeny Kafelnikov (RUS),Yevgeny Kafelnikov (RUS),Yevgeny Kafelnikov (RUS),Yevgeny Kafelnikov (RUS),,Yevgeny Kafelnikov (RUS),,叶甫盖尼·卡费尔尼科夫(俄罗斯)
+Carlos.Moya,Carlos Moya (SOA),Carlos Moya (ESP),Carlos Moya (ESP),Carlos Moya (ESP),Carlos Moya (ESP),,Carlos Moya (ESP),,卡洛斯·莫亚(西班牙)
+Marcelo.Rios,Marcelo Rios (CHI),Marcelo Rios (CHI),Marcelo Rios (CHI),Marcelo Rios (CHI),Marcelo Rios (CHI),,Marcelo Rios (CHI),,马赛洛·里奥斯(智利)
+Thomas.Muster,Thomas Muster (AUT),Thomas Muster (AUT),Thomas Muster (AUT),Thomas Muster (AUT),Thomas Muster (AUT),,Thomas Muster (AUT),,托马斯·穆斯特(奥地利)
+Andre.Agassi,Andre Agassi (USA),Andre Agassi (USA),Andre Agassi (USA),Andre Agassi (USA),Andre Agassi (USA),,Andre Agassi (USA),,安德烈·阿加西(美国)
+Pete.Sampras,Pete Sampras (USA),Pete Sampras (USA),Pete Sampras (USA),Pete Sampras (USA),Pete Sampras (USA),,Pete Sampras (USA),,皮特·森伯斯(美国)
+Jim.Courier,Jim Courier (USA),Jim Courier (USA),Jim Courier (USA),Jim Courier (USA),Jim Courier (USA),,Jim Courier (USA),,吉姆·考瑞尔(美国)
+Boris.Becker,Boris Becker (GER),Boris Becker (GER),Boris Becker (GER),Boris Becker (GER),Boris Becker (GER),,Boris Becker (GER),,鲍里斯·贝克尔(德国)
+Stefan.Edberg,Stefan Edberg (SWE),Stefan Edberg (SWE),Stefan Edberg (SWE),Stefan Edberg (SWE),Stefan Edberg (SWE),,Stefan Edberg (SWE),,斯特凡·埃德伯格(瑞典)
+Mats.Wilander,Mats Wilander (SWE),Mats Wilander (SWE),Mats Wilander (SWE),Mats Wilander (SWE),Mats Wilander (SWE),,Mats Wilander (SWE),,马茨·维兰德(瑞典)
+Ivan.Lendl,Ivan Lendl (USA),Ivan Lendl (USA),Ivan Lendl (USA),Ivan Lendl (USA),Ivan Lendl (USA),,Ivan Lendl (USA),,伊万·伦德尔(美国)
+John.McEnroe,John McEnroe (USA),John McEnroe (USA),John McEnroe (USA),John McEnroe (USA),John McEnroe (USA),,John McEnroe (USA),,约翰·麦肯罗(美国)
+Bjorn.Borg,Björn Borg (SWE),Bjorn Borg (SWE),Bjorn Borg (SWE),Bjorn Borg (SWE),Bjorn Borg (SWE),,Bjorn Borg (SWE),,比约恩·博格(瑞典)
+Jimmy.Connors,Jimmy Connors (USA),Jimmy Connors (USA),Jimmy Connors (USA),Jimmy Connors (USA),Jimmy Connors (USA),,Jimmy Connors (USA),,占美·甘纳斯(美国)
+John.Newcombe,John Newcombe (AUS),John Newcombe (AUS),John Newcombe (AUS),John Newcombe (AUS),John Newcombe (AUS),,John Newcombe (AUS),,约翰·纽康姆(澳大利亚)
+Ilie.Nastase,Ilie Nastase (ROU),Ilie Nastase (ROU),Ilie Nastase (ROU),Ilie Nastase (ROU),Ilie Nastase (ROU),,Ilie Nastase (ROU),,伊利耶 ·纳斯塔塞(罗马尼亚)
+xaxis.offset,2300,2300,2300,2300,2300,2300,2300,2300,2450
+annot.size,3.9,3.9,3.9,3.9,3.9,3.9,3.9,3.4,3
+player.size,4.5,4.5,4.5,4.5,4.5,4.5,4.5,4,3.2
+subtitle.size,15,15,15,15,15,15,15,13,11
