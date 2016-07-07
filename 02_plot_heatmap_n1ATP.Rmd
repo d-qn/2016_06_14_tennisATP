@@ -166,6 +166,9 @@ for (lang in colnames(txt)) {
   html.outfile <-  paste0("heatmap_alln1ATP_", lang, ".html")
   teaser.outfile <- "teaser_alln1ATP.png"
   
+  # ugly hack for Japanese
+  if(lang == "JA") {player.lab.aligned$x <- player.lab.aligned$x - (7 * 16)}
+  
   # get the annotations and player name translations
   anno <- cbind(annot, txt = txt[rownames(annot), lang], stringsAsFactors = F)
   player.lab.aligned$player <- txt[player.lab.aligned$key, lang]
@@ -238,7 +241,6 @@ for (lang in colnames(txt)) {
     tags$html(
       tags$head(includeHTML("styles.html")),
       tags$body(    
-        #h2( txt["page.title", lang]),
         div(class="graphic", 
             img(src = png.outfile, width= "100%")
         ),
@@ -247,11 +249,5 @@ for (lang in colnames(txt)) {
       )), file = html.outfile
   )
 }
-
-```
-
-```{r snippets, include = F}
-
-as.data.frame(n1r[!duplicated(n1r$player),])
 
 ```

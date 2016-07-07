@@ -244,6 +244,10 @@ for (lang in colnames(txt)) {
   html.outfile &lt;-  paste0(&quot;heatmap_alln1ATP_&quot;, lang, &quot;.html&quot;)
   teaser.outfile &lt;- &quot;teaser_alln1ATP.png&quot;
   
+  if(lang == &quot;JA&quot;) {
+    player.lab.aligned$x &lt;- player.lab.aligned$x - (7 * 16)
+  }
+  
   # get the annotations and player name translations
   anno &lt;- cbind(annot, txt = txt[rownames(annot), lang], stringsAsFactors = F)
   player.lab.aligned$player &lt;- txt[player.lab.aligned$key, lang]
