@@ -244,9 +244,8 @@ for (lang in colnames(txt)) {
   html.outfile &lt;-  paste0(&quot;heatmap_alln1ATP_&quot;, lang, &quot;.html&quot;)
   teaser.outfile &lt;- &quot;teaser_alln1ATP.png&quot;
   
-  if(lang == &quot;JA&quot;) {
-    player.lab.aligned$x &lt;- player.lab.aligned$x - (7 * 16)
-  }
+  # ugly hack for Japanese
+  if(lang == &quot;JA&quot;) {player.lab.aligned$x &lt;- player.lab.aligned$x - (7 * 16)}
   
   # get the annotations and player name translations
   anno &lt;- cbind(annot, txt = txt[rownames(annot), lang], stringsAsFactors = F)
@@ -320,7 +319,6 @@ for (lang in colnames(txt)) {
     tags$html(
       tags$head(includeHTML(&quot;styles.html&quot;)),
       tags$body(    
-        #h2( txt[&quot;page.title&quot;, lang]),
         div(class=&quot;graphic&quot;, 
             img(src = png.outfile, width= &quot;100%&quot;)
         ),
