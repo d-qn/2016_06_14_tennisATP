@@ -134,6 +134,10 @@ dates &lt;- index(zn1)
 date.reg &lt;- c(seq(min(dates), max(dates), 7))
 date.reg &lt;- date.reg[order(date.reg)]
 
+## hack the last date!!
+if(hackLastDate) date.reg[length(date.reg)] &lt;- max(dates)
+
+
 idx &lt;- findInterval(date.reg, index(zn1), rightmost.closed = FALSE, all.inside = FALSE)
 eq.zn1 &lt;- zoo(unclass(zn1)[idx,], date.reg)
 
@@ -162,7 +166,7 @@ n1.dates &lt;- n1 %&gt;%
 n1$player &lt;- factor(n1$player, levels = rev(n1.dates$player))
 
 # check dates spacing
-stopifnot(all(diff(unique(n1$dates))==7))
+if(!hackLastDate) stopifnot(all(diff(unique(n1$dates))==7))
 
 narow &lt;- n1 %&gt;% group_by(dates) %&gt;% 
   summarise(narow = all(is.na(rank))) %&gt;% ungroup()
@@ -189,14 +193,14 @@ htheme &lt;- function(base_family = &quot;OpenSans-CondensedLight&quot;, subtitl
     theme(
       plot.subtitle = element_text(size=subtitle.size, margin=margin(b = 10)),
       plot.title = element_text(size = 19, margin=margin(b = 10)),
-      axis.ticks.length = unit(1.4, &quot;pt&quot;),
+      axis.ticks.length = unit(1.7, &quot;pt&quot;),
       axis.ticks.y = element_blank(),
       axis.text.y = element_blank(),
       axis.line = element_blank(),
-      axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 10),
+      axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 11, colour = &quot;#1a1a1a&quot; ),
       axis.title = element_blank(),
       legend.text = element_text(size = 11, vjust = 0),
-      legend.title = element_text(size = 13, hjust = 0.5, vjust = 1),
+      legend.title = element_text(size = 12, hjust = 0.5, vjust = 1, colour = &quot;#595959&quot;),
       legend.position = c(1, 1.08),
       legend.justification = c(1,1),
       legend.key.height = unit(1.8, &quot;lines&quot;),
@@ -225,11 +229,11 @@ player.lab &lt;- n1r %&gt;% group_by(player, y) %&gt;%
   summarise(x = dates[max(which(!is.na(rank)))] + plab.offset) %&gt;% ungroup()
 # hack to manually aligned some player names vertically
 player.lab.aligned &lt;- player.lab
-player.lab.aligned[25:24, 'x'] &lt;- player.lab[25, 'x']
-player.lab.aligned[23:18, 'x'] &lt;- player.lab[player.lab$player == &quot;Stefan Edberg&quot;, 'x']
-player.lab.aligned[17:16, 'x'] &lt;- player.lab[player.lab$player == &quot;Jim Courier&quot;, 'x']
-player.lab.aligned[13:7, 'x'] &lt;- player.lab[13, 'x']
-player.lab.aligned[1:5, 'x'] &lt;- player.lab[1, 'x']
+player.lab.aligned[26:25, 'x'] &lt;- player.lab[26, 'x']
+player.lab.aligned[24:19, 'x'] &lt;- player.lab[player.lab$player == &quot;Stefan Edberg&quot;, 'x']
+player.lab.aligned[18:17, 'x'] &lt;- player.lab[player.lab$player == &quot;Jim Courier&quot;, 'x']
+player.lab.aligned[14:8, 'x'] &lt;- player.lab[14, 'x']
+player.lab.aligned[1:7, 'x'] &lt;- player.lab[1, 'x']
 player.lab.aligned$key &lt;- gsub(&quot; &quot;, &quot;\\.&quot;, player.lab.aligned$player)
 # tmp &lt;- data.frame(key = gsub(&quot; &quot;, &quot;\\.&quot;, player.lab.aligned$player), value = paste0(player.lab.aligned$player, &quot; (&quot;, nat[match(player.lab.aligned$player, names(nat))], &quot;)&quot;))
 # write.csv(tmp, file = &quot;input/number1Player_names.csv&quot;, row.names = F)
@@ -269,8 +273,9 @@ for (lang in colnames(txt)) {
     ) + 
     scale_x_date(
       name = &quot;&quot;,
+     # position = &quot;top&quot;,
       breaks = c(min(n1r$dates), as.Date(paste0(years[-c(1)], &quot;-01-01&quot;)), max(n1r$dates)),
-      labels =  c(as.character(min(n1r$dates)), gsub(&quot;(1974|2016)&quot;, &quot;&quot;, years[-c(1)]), as.character(max(n1r$dates))),
+      labels =  c(as.character(min(n1r$dates)), gsub(&quot;(1974)&quot;, &quot;&quot;, years[-c(1)]), as.character(max(n1r$dates))),
       expand = c(0, 0), 
       limits = c(min(n1r$dates), max(n1r$dates) + as.numeric(txt['xaxis.offset', lang]))
     ) +
@@ -296,7 +301,7 @@ for (lang in colnames(txt)) {
   
   hatp2 &lt;- hatp + geom_text(
     data = anno, 
-    aes(x = x, y = y, label = txt, hjust = hjust, vjust = vjust),
+    aes(x = x, y = y, label = txt, hjust = hjust, vjust = vjust), lineheight = 0.94,
     family = txt[&quot;base.typeface&quot;, lang], size = as.numeric(txt['annot.size', lang]), color=&quot;#737373&quot;
   ) + geom_segment(
     data = anno, 
