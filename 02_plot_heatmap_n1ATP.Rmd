@@ -198,7 +198,7 @@ for (lang in colnames(txt)) {
       name = "",
      # position = "top",
       breaks = c(min(n1r$dates), as.Date(paste0(years[-c(1)], "-01-01")), max(n1r$dates)),
-      labels =  c(as.character(min(n1r$dates)), gsub("(1974)", "", years[-c(1)]), as.character(max(n1r$dates))),
+      labels =  c(as.character(min(n1r$dates)), gsub("(1974|2017)", "", years[-c(1)]), as.character(max(n1r$dates))),
       expand = c(0, 0), 
       limits = c(min(n1r$dates), max(n1r$dates) + as.numeric(txt['xaxis.offset', lang]))
     ) +
@@ -217,7 +217,7 @@ for (lang in colnames(txt)) {
     )
   
   if(!file.exists(teaser.outfile)) {
-    png(teaser.outfile, width = 3478, height = 2000, res = 260, pointsize = 9)
+    png(teaser.outfile, width = 3478 / 2, height = 2000 / 2, res = 260, pointsize = 9)
     print(hatp)
     dev.off()    
   }
@@ -225,22 +225,23 @@ for (lang in colnames(txt)) {
   hatp2 <- hatp + geom_text(
     data = anno, 
     aes(x = x, y = y, label = txt, hjust = hjust, vjust = vjust), lineheight = 0.94,
-    family = txt["base.typeface", lang], size = as.numeric(txt['annot.size', lang]), color="#737373"
+    family = txt["base.typeface", lang], size = as.numeric(txt['annot.size', lang]), color="#262626"
   ) + geom_segment(
     data = anno, 
     aes(x = x0, xend = x1, y = y0, yend = y1),
-    colour = '#a6a6a6', alpha = 0.5, size = 0.2,
+    colour = '#404040', alpha = 0.5, size = 0.2,
     arrow = arrow(angle = 20, length = unit(0.01, "npc"), type = "closed")
   )
   
-  png(png.outfile, width = 3478, height = 2000, res = 270, pointsize = 9)
+  #png(png.outfile, width = 3478, height = 2000, res = 270, pointsize = 9)
+  png(png.outfile, width = 1739, height = 1000, res = 135, pointsize = 9)
   print(hatp2)
   dev.off()
   source <- paste0(
     txt['source', lang], ": ", 
     htmlLink(txt['source.link', lang], txt['source.name', lang]), " | ", 
     htmlLink("http://www.swissinfo.ch", "swissinfo.ch"), " | ",
-    htmlLink("https://twitter.com/duc_qn", "Duc-Quang Nguyen")
+    htmlLink("https://twitter.com/duc_qn", "@duc_qn")
   )
   
   save_html(

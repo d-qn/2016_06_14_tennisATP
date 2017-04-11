@@ -7,23 +7,27 @@
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,400italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 <style>
 
-body, h1, h2, h3, h4, h5, h6, .descr, td, table {
-   text-rendering: optimizeLegibility;
-   font-smoothing: antialiased;
-   font-family: 'Open Sans', sans-serif;
+body, h1, h2, h3, h4, h5, h6, .descr, #cite {
+   font-family: 'Open Sans Condensed', sans-serif;
    background-color: white;
-   font-size: 12px;
-   margin:3px 4px 3px 5px;
+   font-size: 14px;
+   margin:3px 2px 2px 1.5px;
 }
 
 img {
 	max-width: 100%;
 	height: auto;
+/*http://stackoverflow.com/questions/30202638/safari-crisp-edges-not-supported	*/
+/*https://builtvisible.com/image-scaling-in-css/*/
+  image-rendering: -webkit-pixelated !important; // Safari 7+
+  image-rendering: -moz-crisp-edges !important; // Firefox 3.6+
+  image-rendering: -o-crisp-edges !important; // Opera 12
+  image-rendering: pixelated !important; // Chrome 41+ and Opera 26+
 }
 
 
 #cite {
-    font-size: 0.7em; color: #B8B8B8; text-align: right; margin-top:1px; margin-right:15px; padding-bottom: 3px;
+    font-size: 0.75em; color: #B8B8B8; text-align: right; margin-top:1px; margin-right:15px; padding-bottom: 3px;
 }
 #cite a { text-decoration: none; color: #821122; }
 
@@ -90,6 +94,12 @@ body {
    }
 }
 
+@media only screen and (max-width: 600px) {
+    body {
+           font-size: 11px;
+    }
+}
+
 </style>
 </head>
 <body style="background-color:white;">
@@ -98,7 +108,7 @@ body {
     <div class="graphic">
       <img src="heatmap_alln1ATP_ZH.png" width="100%"/>
     </div>
-    <div id="cite">来源: <a href="http://www.atpworldtour.com" target="_blank">ATP世界巡回赛</a> | <a href="http://www.swissinfo.ch" target="_blank">swissinfo.ch</a> | <a href="https://twitter.com/duc_qn" target="_blank">Duc-Quang Nguyen</a></div>
+    <div id="cite">来源: <a href="http://www.atpworldtour.com" target="_blank">ATP世界巡回赛</a> | <a href="http://www.swissinfo.ch" target="_blank">swissinfo.ch</a> | <a href="https://twitter.com/duc_qn" target="_blank">@duc_qn</a></div>
     <script type="text/javascript" src="https://www.swissinfo.ch/static/Themes/basic/js/vendor/iframeResizer.contentWindow.3.5.3.min.js"></script>
   </body>
 </html>

@@ -95,6 +95,7 @@ button.code-folding-btn:focus {
 </style>
 
 
+
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
@@ -186,7 +187,6 @@ atp &lt;- lapply(links, function(link) {
   zoo(rtable$Singles, rtable$Date) 
 })</code></pre>
 <pre><code>## 
-##  http://www.atpworldtour.com/en/players/andy-murray/mc10/rankings-history
 ##  http://www.atpworldtour.com/en/players/patrick-rafter/r255/rankings-history
 ##  http://www.atpworldtour.com/en/players/carlos-moya/m605/rankings-history
 ##  http://www.atpworldtour.com/en/players/yevgeny-kafelnikov/k267/rankings-history
@@ -195,6 +195,7 @@ atp &lt;- lapply(links, function(link) {
 ##  http://www.atpworldtour.com/en/players/juan-carlos-ferrero/f316/rankings-history
 ##  http://www.atpworldtour.com/en/players/john-newcombe/n044/rankings-history
 ##  http://www.atpworldtour.com/en/players/marat-safin/s741/rankings-history
+##  http://www.atpworldtour.com/en/players/andy-murray/mc10/rankings-history
 ##  http://www.atpworldtour.com/en/players/boris-becker/b028/rankings-history
 ##  http://www.atpworldtour.com/en/players/andy-roddick/r485/rankings-history
 ##  http://www.atpworldtour.com/en/players/mats-wilander/w023/rankings-history
@@ -237,7 +238,6 @@ dob &lt;- sapply(ov.url, function(url) {
   gsub(&quot;.*(\\d{4}\\.\\d{2}\\.\\d{2}).*&quot;, &quot;\\1&quot;, dob)
 })</code></pre>
 <pre><code>## 
-##  http://www.atpworldtour.com/en/players/andy-murray/mc10/overview
 ##  http://www.atpworldtour.com/en/players/patrick-rafter/r255/overview
 ##  http://www.atpworldtour.com/en/players/carlos-moya/m605/overview
 ##  http://www.atpworldtour.com/en/players/yevgeny-kafelnikov/k267/overview
@@ -246,6 +246,7 @@ dob &lt;- sapply(ov.url, function(url) {
 ##  http://www.atpworldtour.com/en/players/juan-carlos-ferrero/f316/overview
 ##  http://www.atpworldtour.com/en/players/john-newcombe/n044/overview
 ##  http://www.atpworldtour.com/en/players/marat-safin/s741/overview
+##  http://www.atpworldtour.com/en/players/andy-murray/mc10/overview
 ##  http://www.atpworldtour.com/en/players/boris-becker/b028/overview
 ##  http://www.atpworldtour.com/en/players/andy-roddick/r485/overview
 ##  http://www.atpworldtour.com/en/players/mats-wilander/w023/overview
@@ -279,6 +280,7 @@ write.csv(dob, file = &quot;input/alln1_dob.csv&quot;)</code></pre>
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
