@@ -217,7 +217,7 @@ for (lang in colnames(txt)) {
     )
   
   if(!file.exists(teaser.outfile)) {
-    png(teaser.outfile, width = 3478 / 2, height = 2000 / 2, res = 260, pointsize = 9)
+    png(teaser.outfile, width = 3478 / 3.2, height = 2000 / 3.2, res = 260, pointsize = 9)
     print(hatp)
     dev.off()    
   }
