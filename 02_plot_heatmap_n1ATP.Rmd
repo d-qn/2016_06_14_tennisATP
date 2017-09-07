@@ -126,9 +126,9 @@ htheme <- function(base_family = "OpenSans-CondensedLight", subtitle.size = 15) 
       legend.title = element_text(size = 12, hjust = 0.5, vjust = 1, colour = "#595959"),
       legend.position = c(1, 1.08),
       legend.justification = c(1,1),
-      legend.key.height = unit(1.8, "lines"),
-      legend.key.width = unit(1.5, "lines"),
-      plot.margin = unit(c(0.1, 0.1, 0.1, 0.1), "cm")
+      legend.key.height = unit(2.4, "lines"),
+      legend.key.width = unit(1.6, "lines"),
+      plot.margin = unit(c(0.1, 0.1, 0.1, 0.15), "cm")
     )
 }
 
@@ -217,7 +217,7 @@ for (lang in colnames(txt)) {
     )
   
   if(!file.exists(teaser.outfile)) {
-    png(teaser.outfile, width = 3478 / 3.2, height = 2000 / 3.2, res = 260, pointsize = 9)
+    png(teaser.outfile, width = 3478 / 3, height = 2000 / 3, res = 260, pointsize = 9)
     print(hatp)
     dev.off()    
   }
@@ -234,7 +234,8 @@ for (lang in colnames(txt)) {
   )
   
   #png(png.outfile, width = 3478, height = 2000, res = 270, pointsize = 9)
-  png(png.outfile, width = 1739, height = 1000, res = 135, pointsize = 9)
+  #png(png.outfile, width = 1739, height = 1000, res = 135, pointsize = 9)
+  png(png.outfile, width = 1800, height = 1100, res = 135, pointsize = 9)
   print(hatp2)
   dev.off()
   source <- paste0(

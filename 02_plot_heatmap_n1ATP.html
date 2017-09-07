@@ -204,9 +204,9 @@ htheme &lt;- function(base_family = &quot;OpenSans-CondensedLight&quot;, subtitl
       legend.title = element_text(size = 12, hjust = 0.5, vjust = 1, colour = &quot;#595959&quot;),
       legend.position = c(1, 1.08),
       legend.justification = c(1,1),
-      legend.key.height = unit(1.8, &quot;lines&quot;),
-      legend.key.width = unit(1.5, &quot;lines&quot;),
-      plot.margin = unit(c(0.1, 0.1, 0.1, 0.1), &quot;cm&quot;)
+      legend.key.height = unit(2.4, &quot;lines&quot;),
+      legend.key.width = unit(1.6, &quot;lines&quot;),
+      plot.margin = unit(c(0.1, 0.1, 0.1, 0.15), &quot;cm&quot;)
     )
 }
 
@@ -295,7 +295,7 @@ for (lang in colnames(txt)) {
     )
   
   if(!file.exists(teaser.outfile)) {
-    png(teaser.outfile, width = 3478 / 3.2, height = 2000 / 3.2, res = 260, pointsize = 9)
+    png(teaser.outfile, width = 3478 / 3, height = 2000 / 3, res = 260, pointsize = 9)
     print(hatp)
     dev.off()    
   }
@@ -312,7 +312,8 @@ for (lang in colnames(txt)) {
   )
   
   #png(png.outfile, width = 3478, height = 2000, res = 270, pointsize = 9)
-  png(png.outfile, width = 1739, height = 1000, res = 135, pointsize = 9)
+  #png(png.outfile, width = 1739, height = 1000, res = 135, pointsize = 9)
+  png(png.outfile, width = 1800, height = 1100, res = 135, pointsize = 9)
   print(hatp2)
   dev.off()
   source &lt;- paste0(
