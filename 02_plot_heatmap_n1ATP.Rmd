@@ -18,6 +18,7 @@ library(swiRcharts)
 library(RColorBrewer)
 
 hackLastDate <- T
+hackRepeatLastWeek <- T
 atpRanking.file <- "input/alln1_ATP_ranking.csv"
 n1_nationality.file <- "input/alln1_nationlity.csv"
 trad.file <- "input/All n°1 ATP ranking heatmap - Sheet1.csv"
@@ -56,8 +57,7 @@ date.reg <- c(seq(min(dates), max(dates), 7))
 date.reg <- date.reg[order(date.reg)]
 
 ## hack the last date!!
-if(hackLastDate) date.reg[length(date.reg)] <- max(dates)
-
+if(hackLastDate) date.reg <- c(date.reg, max(dates))
 
 idx <- findInterval(date.reg, index(zn1), rightmost.closed = FALSE, all.inside = FALSE)
 eq.zn1 <- zoo(unclass(zn1)[idx,], date.reg)
@@ -102,6 +102,16 @@ if(length(naidx)>0) {
   n1[which(n1$dates %in% (naDates-7)), 'dates.end'] <- n1[which(n1$dates %in% (naDates-7)), 'dates.end'] + 7
 }
 
+if(hackRepeatLastWeek) {
+  n1.rep <- n1 %>% filter(dates == max(dates))
+  n1.rep %<>% mutate(
+    dates = dates + 7,
+    dates.end = dates.end + 7
+  )
+  n1 <- bind_rows(n1, n1.rep) %>%
+    arrange(dates)
+}
+
 ```
 
 ## Plot
@@ -110,7 +120,6 @@ if(length(naidx)>0) {
 
 ```{r heatmap}
 ## Helpers and settings
-
 htheme <- function(base_family = "OpenSans-CondensedLight", subtitle.size = 15) {
   swi_theme(y_gridlines = F, base_family = base_family) + 
     theme(
@@ -198,7 +207,9 @@ for (lang in colnames(txt)) {
       name = "",
      # position = "top",
       breaks = c(min(n1r$dates), as.Date(paste0(years[-c(1)], "-01-01")), max(n1r$dates)),
-      labels =  c(as.character(min(n1r$dates)), gsub("(1974|2017)", "", years[-c(1)]), as.character(max(n1r$dates))),
+      labels =  c(as.character(min(n1r$dates)), 
+                  gsub("(1974|2018)", "", years[-c(1)]), 
+                  ifelse(hackRepeatLastWeek, as.character(max(n1r$dates)-7), as.character(max(n1r$dates)))),
       expand = c(0, 0), 
       limits = c(min(n1r$dates), max(n1r$dates) + as.numeric(txt['xaxis.offset', lang]))
     ) +
